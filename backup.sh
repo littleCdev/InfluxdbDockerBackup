@@ -30,8 +30,13 @@ fi
 docker pull --quiet influxdb
 
 #create container with given name if it does not exist
-[[ $(docker ps -f "name=${DOCKER_NAME}" --format '{{.Names}}') == "${DOCKER_NAME}" ]] ||
+[[ $(docker ps -a -f "name=${DOCKER_NAME}" --format '{{.Names}}') == "${DOCKER_NAME}" ]] ||
 docker run -d --name "${DOCKER_NAME}" -v ${BACKUP_LOCATION}:/data influxdb
+
+#start container if it does exist but is not in ps
+[[ $(docker ps -f "name=${DOCKER_NAME}" --format '{{.Names}}') == "${DOCKER_NAME}" ]] ||
+docker start "${DOCKER_NAME}"
+
 
 # get all databases from influxdb
 if [ ${BACKUP_ALL} = true ] ; then
