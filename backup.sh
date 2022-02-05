@@ -47,7 +47,7 @@ if [ ${BACKUP_ALL} = true ] ; then
 	  continue;
 	fi
 
-    if [[ ! " ${DATABASES_TO_EXCLUDE[@]} " =~ " ${line} " ]]; then
+    if [[ ! " ${DATABASES_TO_EXCLUDE[@]} " =~ "${line}" ]]; then
       DATABASES_TO_BACKUP+=($line)
     fi
   done <<< $(docker exec ${DOCKER_NAME} echo SHOW DATABASES | influx)
